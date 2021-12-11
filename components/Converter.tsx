@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 
+import PopupModal from './PopupModal';
+
 interface CurrencyProps {
   nepaliCurrency: number | string;
   busdCurrency: number | string;
@@ -72,6 +74,7 @@ export default function Converter() {
             />
           </div>
         </form>
+        <PopupModal />
       </div>
     </section>
   );
