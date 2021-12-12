@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 
 import { Dialog, Transition } from '@headlessui/react';
+import { formatEther } from '@ethersproject/units';
 import { Injected } from './Connectors';
+import { Spinner } from './utils/Spinner';
 import { useWeb3React } from '@web3-react/core';
 
 export default function PopupModal() {
@@ -22,6 +24,20 @@ export default function PopupModal() {
 
   async function disconnect() {
     deactivate();
+  }
+
+  function Account() {
+    return (
+      <span>
+        {account === null
+          ? '-'
+          : account
+          ? `${account.substring(0, 4)}...${account.substring(
+              account.length - 4
+            )}`
+          : ''}
+      </span>
+    );
   }
 
   function Balance() {
@@ -53,7 +69,13 @@ export default function PopupModal() {
 
     return (
       <span>
-        {balance && parseInt(balance?.toString().slice(0, 1)).toFixed(2)}
+        {balance === null ? (
+          'Error'
+        ) : balance ? (
+          `Ξ ${formatEther(balance)}`
+        ) : (
+          <Spinner color="violet" />
+        )}
       </span>
     );
   }
@@ -115,7 +137,7 @@ export default function PopupModal() {
                   </div>
                   <div className="mt-2">
                     {!active ? (
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 sm:pl-4">
                         Wallet not connected. Please click the &apos;Connect
                         Now&apos; button below.
                       </p>
@@ -139,28 +161,31 @@ export default function PopupModal() {
                         </thead>
                         <tbody className="bg-white">
                           <tr>
-                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap font-medium text-sm text-gray-500">
                               Account
                             </td>
-                            <td className="px-6 py-4 text-right whitespace-nowrap font-medium text-gray-500">
-                              {account?.substring(0, 4) +
-                                '..' +
-                                account?.slice(-4)}
+                            <td className="px-6 py-4 text-right text-sm whitespace-nowrap font-medium text-gray-500">
+                              {account ? (
+                                // account?.slice(0, 4) + '..' + account?.slice(-4)
+                                <Account />
+                              ) : (
+                                <Spinner color="violet" />
+                              )}
                             </td>
                           </tr>
                           <tr>
-                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-500">
-                              ChainId
+                            <td className="px-6 py-4 whitespace-nowrap font-medium text-sm text-gray-500">
+                              Chain ID
                             </td>
-                            <td className="px-6 py-4 text-right whitespace-nowrap font-medium text-gray-500">
-                              {chainId}
+                            <td className="px-6 py-4 text-right whitespace-nowrap font-medium text-sm text-gray-500">
+                              {chainId ? chainId : <Spinner color="violet" />}
                             </td>
                           </tr>
                           <tr>
-                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-500">
+                            <td className="px-6 py-4 whitespace-nowrap font-medium text-sm text-gray-500">
                               Balance
                             </td>
-                            <td className="px-6 py-4 text-right whitespace-nowrap font-medium text-gray-500">
+                            <td className="px-6 py-4 text-right flex justify-end items-end whitespace-nowrap font-medium text-sm text-gray-500">
                               {active && <Balance />}
                             </td>
                           </tr>

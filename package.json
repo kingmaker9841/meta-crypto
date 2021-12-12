@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ethersproject/units": "^5.5.0",
     "@headlessui/react": "^1.4.2",
     "@tailwindcss/forms": "^0.3.4",
     "@web3-react/core": "^6.1.9",
