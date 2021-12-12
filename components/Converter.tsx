@@ -4,14 +4,14 @@ import { useState } from 'react';
 import PopupModal from './PopupModal';
 
 interface CurrencyProps {
-  nepaliCurrency: number | string;
-  busdCurrency: number | string;
+  busd: number | string;
+  nepali: number | string;
 }
 
 export default function Converter() {
   const [currency, setCurrency] = useState<CurrencyProps>({
-    nepaliCurrency: '',
-    busdCurrency: '',
+    busd: '',
+    nepali: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +20,14 @@ export default function Converter() {
     switch (e.target.id) {
       case 'NEP':
         setCurrency({
-          nepaliCurrency: currentValue,
-          busdCurrency: (parseFloat(currentValue) * 3).toFixed(2),
+          nepali: currentValue,
+          busd: (parseFloat(currentValue) * 3).toFixed(2),
         });
         break;
       case 'BUSD':
         setCurrency({
-          busdCurrency: currentValue,
-          nepaliCurrency: (parseFloat(currentValue) / 3).toFixed(2),
+          busd: currentValue,
+          nepali: (parseFloat(currentValue) / 3).toFixed(2),
         });
         break;
       default:
@@ -42,35 +42,35 @@ export default function Converter() {
         <form>
           <div className="py-3">
             <label
-              htmlFor="NEP"
               className="block text-xs font-medium text-gray-500"
+              htmlFor="NEP"
             >
               NEP
             </label>
             <input
-              id="NEP"
-              type="number"
               className="focus:ring-gray-900 focus:border-gray-900 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
-              value={currency.nepaliCurrency}
-              placeholder="0.00"
+              id="NEP"
               onChange={handleChange}
+              placeholder="0.00"
+              type="number"
+              value={currency.nepali}
             />
           </div>
 
           <div className="py-3">
             <label
-              htmlFor="BUSD"
               className="pb-1 block text-xs font-medium text-gray-500"
+              htmlFor="BUSD"
             >
               BUSD
             </label>
             <input
-              id="BUSD"
-              type="number"
               className="focus:ring-gray-900 focus:border-gray-900 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
-              value={currency.busdCurrency}
-              placeholder="0.00"
+              id="BUSD"
               onChange={handleChange}
+              placeholder="0.00"
+              type="number"
+              value={currency.busd}
             />
           </div>
         </form>
