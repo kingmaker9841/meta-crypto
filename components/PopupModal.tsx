@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 import { Injected } from './Connectors';
@@ -9,7 +9,7 @@ export default function PopupModal() {
 
   const cancelButtonRef = useRef(null);
 
-  const { active, account, library, connector, activate, deactivate, chainId } =
+  const { active, account, library, activate, deactivate, chainId } =
     useWeb3React();
 
   async function connect() {
@@ -24,34 +24,39 @@ export default function PopupModal() {
     deactivate();
   }
 
-  // function Balance() {
-  //   const [balance, setBalance] = useState(null);
-  //   useEffect((): any => {
-  //     if (!!account && !!library) {
-  //       let stale = false;
+  function Balance() {
+    const [balance, setBalance] = useState<string | undefined>(undefined);
 
-  //       library
-  //         .getBalance(account)
-  //         .then((balance: any) => {
-  //           if (!stale) {
-  //             setBalance(balance);
-  //           }
-  //         })
-  //         .catch(() => {
-  //           if (!stale) {
-  //             setBalance(null);
-  //           }
-  //         });
+    useEffect((): any => {
+      if (!!account && !!library) {
+        let stale = false;
 
-  //       return () => {
-  //         stale = true;
-  //         setBalance(null);
-  //       };
-  //     }
-  //   }, [account, library, chainId]);
+        library.eth
+          .getBalance(account)
+          .then((balance: any) => {
+            if (!stale) {
+              setBalance(balance);
+            }
+          })
+          .catch(() => {
+            if (!stale) {
+              setBalance(undefined);
+            }
+          });
 
-  //   return <span>{balance}</span>;
-  // }
+        return () => {
+          stale = true;
+          setBalance(undefined);
+        };
+      }
+    }, []);
+
+    return (
+      <span>
+        {balance && parseInt(balance?.toString().slice(0, 1)).toFixed(2)}
+      </span>
+    );
+  }
 
   return (
     <Fragment>
@@ -151,6 +156,14 @@ export default function PopupModal() {
                               {chainId}
                             </td>
                           </tr>
+                          <tr>
+                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-500">
+                              Balance
+                            </td>
+                            <td className="px-6 py-4 text-right whitespace-nowrap font-medium text-gray-500">
+                              {active && <Balance />}
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
                     )}
@@ -177,6 +190,14 @@ export default function PopupModal() {
                     >
                       Connect Now
                     </button>
+                  </div>
+                )}
+
+                {active && (
+                  <div className="flex justify-center">
+                    <p className="px-6 py-4 whitespace-nowrap font-small text-sm text-gray-500">
+                      Wallet Details
+                    </p>
                   </div>
                 )}
 
