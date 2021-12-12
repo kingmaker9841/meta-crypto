@@ -48,7 +48,7 @@ export default function Converter() {
               NEP
             </label>
             <input
-              className="focus:ring-gray-900 focus:border-gray-900 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
+              className="focus:ring-gray-900 focus:border-gray-300 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
               id="NEP"
               onChange={handleChange}
               placeholder="0.00"
@@ -65,7 +65,7 @@ export default function Converter() {
               BUSD
             </label>
             <input
-              className="focus:ring-gray-900 focus:border-gray-900 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
+              className="focus:ring-gray-900 focus:border-gray-300 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
               id="BUSD"
               onChange={handleChange}
               placeholder="0.00"
